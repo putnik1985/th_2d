@@ -1,0 +1,2 @@
+input=natural_convection.i
+../th_2d-opt -i $input

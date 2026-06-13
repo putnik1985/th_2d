@@ -1,0 +1,6 @@
+Applications:
+    th_2d:
+        app_types:
+            - th_2DApp
+        content_directory: ${ROOT_DIR}/doc/content
+        log_default: WARNING
