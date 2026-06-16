@@ -36,7 +36,18 @@
  []
   
  [time_derivative]
-  type = HeatConductionTimeDerivative
+     type = TempDerivative_NP
+     W = 400.
+    T0 = 273.15
+ swres = 0.05
+    ri = 920
+    rs = 2650.
+    rw = 1000.
+    ci = 2060.
+    cs = 835.
+    cw = 4182.
+    porosity = 0.37
+    Lf = 334000.
   variable = T
  []
 []

@@ -51,6 +51,8 @@ TempDerivative_NP::computeQpResidual()
   Real si = 1. - sw;
   Real ksi = porosity * ri / (sw + ri / rw * si);
 
+  Real n = porosity;
+  volume_heat_capacity = (1-n)*rs*cs + (n*sw)*rw*cw + (n*si)*ri*ci; 
   return (volume_heat_capacity + Lf * ksi * dsw_dT) * _u_dot[_qp] * _test[_i][_qp]; 
 }
 
@@ -67,6 +69,8 @@ TempDerivative_NP::computeQpJacobian()
   Real si = 1. - sw;
   Real ksi = porosity * ri / (sw + ri / rw * si);
 
+  Real n = porosity;
+  volume_heat_capacity = (1-n)*rs*cs + (n*sw)*rw*cw + (n*si)*ri*ci; 
   return (volume_heat_capacity + Lf * ksi * dsw_dT) * _du_dot_du[_qp] * _phi[_j][_qp] * _test[_i][_qp]; 
 }
 
