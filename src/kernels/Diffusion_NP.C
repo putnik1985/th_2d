@@ -25,20 +25,24 @@ InputParameters
 Diffusion_NP::validParams()
 {
   InputParameters params = Kernel::validParams();
-  params.addRequiredParam<Real>("lambda_unfrozen", "input paramter for the diffusion: thermal conductivity of soil");
-  params.addRequiredParam<Real>("lambda_frozen", "input paramter for the diffusion: thermal conductivity of water");
+  params.addRequiredParam<Real>("lambdas", "thermal conductivity of soil");
+  params.addRequiredParam<Real>("lambdaw", "thermal conductivity of water");
+  params.addRequiredParam<Real>("lambdai", "thermal conductivity of ice");
   params.addRequiredParam<Real>("T0", "input paramter for the diffusion: onset on freezing temperature");
-  params.addRequiredParam<Real>("Tf", "input paramter for the diffusion: full freezing temperature");
+  params.addRequiredParam<Real>("W", "W");
+  params.addRequiredParam<Real>("n", "n");
   return params;
 }
 
 Diffusion_NP::Diffusion_NP(const InputParameters & parameters)
   : // You must call the constructor of the base class first
     Kernel(parameters),
-    _lambda_unfrozen(getParam<Real>("lambda_unfrozen")),
-    _lambda_frozen(getParam<Real>("lambda_frozen")),
-    _T0(getParam<Real>("T0")),
-    _Tf(getParam<Real>("Tf"))
+    lambdas(getParam<Real>("lambdas")),
+    lambdaw(getParam<Real>("lambdaw")),
+    lambdai(getParam<Real>("lambdai")),
+    T0(getParam<Real>("T0")),
+    n(getParam<Real>("n")),
+    W(getParam<Real>("W"))
 {
 }
 
@@ -46,7 +50,9 @@ Real
 Diffusion_NP::computeQpResidual()
 {
   Real T = _u[_qp];
-  Real lambda = conductivity(T);
+  Real sw = saturation(T);
+  Real si = 1. - sw;
+  Real lambda = (1.-n)*lambdas + (n*sw)*lambdaw + (n*si)*lambdai;
   return _grad_test[_i][_qp] * (lambda * _grad_u[_qp]);
 }
 
@@ -54,18 +60,13 @@ Real
 Diffusion_NP::computeQpJacobian()
 {
   Real T = _u[_qp];
-  Real lambda = conductivity(T);
+  Real sw = saturation(T);
+  Real si = 1. - sw;
+  Real lambda = (1.-n)*lambdas + (n*sw)*lambdaw + (n*si)*lambdai;
   return _grad_test[_i][_qp] * (lambda * _grad_phi[_j][_qp]);
 }
 
 Real
-Diffusion_NP::conductivity(Real T){
-  Real lambda; 
-  if (T<_Tf) {
-            return _lambda_frozen;
-  } else if (T>_T0) {
-            return _lambda_unfrozen;
-  } else {
-            return (T - _Tf)/(_T0 - _Tf) * _lambda_unfrozen + (1. - (T - _Tf)/(_T0 - _Tf)) * _lambda_frozen; 
-  }
+Diffusion_NP::saturation(Real T){
+  return (1.- swres) * exp(-(T-T0)*(T-T0)/(W*W)) + swres;
 }

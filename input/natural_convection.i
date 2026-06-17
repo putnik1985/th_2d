@@ -30,9 +30,11 @@
   type = Diffusion_NP
   variable = T
   T0 = 273.15
-  Tf = 269.15
-  lambda_frozen = 2.41
-  lambda_unfrozen = 3.46
+  lambdas = 9.0
+  lambdaw = 0.6
+  lambdai = 2.14
+  W = 400.
+  n = 0.37
  []
   
  [time_derivative]

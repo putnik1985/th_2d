@@ -27,7 +27,7 @@ public:
    * Kernel-derived classes.
    */
   Diffusion_NP(const InputParameters & parameters);
-  Real conductivity(Real);
+  Real saturation(Real);
   /**
    * validParams returns the parameters that this Kernel accepts / needs
    * The actual body of the function MUST be in the .C file.
@@ -58,8 +58,11 @@ private:
    * A vector object for storing the velocity.  Convenient for
    * computing dot products.
    */
-  Real _lambda_unfrozen;
-  Real _lambda_frozen;
-  Real _Tf;
-  Real _T0;
+  Real lambdas;
+  Real lambdai;
+  Real lambdaw;
+  Real T0;
+  Real W;
+  Real swres;
+  Real n;
 };
