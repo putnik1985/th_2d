@@ -29,5 +29,8 @@ private:
   Real kr;
   Real k;
   Real gammaw;
+  Real T0;
+  Real W;
+  Real swres;
   const VariableGradient& grad_pw; // gardien of the coupled variable
 };

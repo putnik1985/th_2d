@@ -15,6 +15,8 @@
 [Variables]
   [T]
   []
+  [pw]
+  []
 []
 
 [ICs]
@@ -23,9 +25,20 @@
     variable = T
     function = 'if(y>0.333,if(y<0.6665, if(x>0.8335, if(x<1.1665, 268.15, 278.15), 278.15), 278.15), 278.15)'
   []
+
+  [init_pw]
+    type = FunctionIC
+    variable = pw
+    function = '100000.'
+  []
 []
 
 [Kernels]
+ [pw_time_derivative]
+   type = TimeDerivative
+   variable = pw
+ []
+
  [conduction]
   type = Diffusion_NP
   variable = T
@@ -52,6 +65,23 @@
     Lf = 334000.
   variable = T
  []
+
+ [convection]
+     type = Convection_NP
+     W = 400.
+    T0 = 273.15
+ swres = 0.05
+    ri = 920
+    rw = 1000.
+    ci = 2060.
+    cw = 4182.
+     k = 7.17e-4
+    kr = 1.0e-6
+ gammaw = 9805.
+  variable = T
+  pw = pw
+ []
+
 []
 
 [BCs]
@@ -79,13 +109,19 @@
   value = 0.
   boundary = bottom
  []
-[]
 
-[Materials]
- [thermal]
-  type = GenericConstantMaterial
-  prop_names = 'thermal_conductivity specific_heat density'
-  prop_values = '4.0 4000.0 1000.0'
+ [pw_left]
+  type = DirichletBC
+  variable = pw
+  value = 100000.
+  boundary = left
+ []
+
+ [pw_right]
+  type = DirichletBC
+  variable = pw
+  value = 100000.
+  boundary = right
  []
 []
 

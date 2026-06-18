@@ -22,6 +22,9 @@ Convection_NP::validParams()
   params.addRequiredParam<Real>("kr", "relative permeability");
   params.addRequiredParam<Real>("k",  "permeability");
   params.addRequiredParam<Real>("gammaw",  "specific weight");
+  params.addRequiredParam<Real>("T0",  "T0");
+  params.addRequiredParam<Real>("swres",  "swres");
+  params.addRequiredParam<Real>("W",  "W");
 
   params.addRequiredCoupledVar("pw", "water pressure");
   return params;
@@ -67,5 +70,5 @@ Convection_NP::computeQpJacobian()
 
 Real
 Convection_NP::saturation(Real T){
-  return T;
+  return (1. - swres) * exp(-(T-T0)*(T-T0)/(W*W)) + swres;
 }
