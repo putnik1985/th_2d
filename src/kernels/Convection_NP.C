@@ -15,18 +15,18 @@ InputParameters
 Convection_NP::validParams()
 {
   InputParameters params = Kernel::validParams();
-  params.addRequiredParam<Real>("cw", "specific water heat conductivity");
-  params.addRequiredParam<Real>("ci", "specific ice heat conductivity");
-  params.addRequiredParam<Real>("rw", "water density");
-  params.addRequiredParam<Real>("ri", "ice density");
-  params.addRequiredParam<Real>("kr", "relative permeability");
-  params.addRequiredParam<Real>("k",  "permeability");
-  params.addRequiredParam<Real>("gammaw",  "specific weight");
-  params.addRequiredParam<Real>("T0",  "T0");
-  params.addRequiredParam<Real>("swres",  "swres");
-  params.addRequiredParam<Real>("W",  "W");
+  params.addRequiredParam<Real>("cw","specific water heat conductivity");
+  params.addRequiredParam<Real>("ci","specific ice heat conductivity");
+  params.addRequiredParam<Real>("rw","water density");
+  params.addRequiredParam<Real>("ri","ice density");
+  params.addRequiredParam<Real>("kr","relative permeability");
+  params.addRequiredParam<Real>("k","permeability");
+  params.addRequiredParam<Real>("gammaw","specific weight");
+  params.addRequiredParam<Real>("T0","T0");
+  params.addRequiredParam<Real>("swres","swres");
+  params.addRequiredParam<Real>("W","W");
 
-  params.addRequiredCoupledVar("pw", "water pressure");
+  params.addRequiredCoupledVar("coupled","water pressure");
   return params;
 }
 
@@ -40,7 +40,10 @@ Convection_NP::Convection_NP(const InputParameters & parameters)
     kr(getParam<Real>("kr")),
      k(getParam<Real>("k")),
     gammaw(getParam<Real>("gammaw")),
-    grad_pw(coupledGradient("pw"))
+    T0(getParam<Real>("T0")),
+    swres(getParam<Real>("swres")),
+    W(getParam<Real>("W")),
+    grad_pw(coupledGradient("coupled"))
 {
 }
 
@@ -50,8 +53,17 @@ Convection_NP::computeQpResidual()
   Real T = _u[_qp];
   Real sw = saturation(T);
   Real si = 1. - sw;
+/**********************************************
+  std::cout << "-------------------------------------------------\n";
+  std::cout << "sw: " << sw << std::endl
+            << "swres: " << swres << std::endl
+            << "T0: " << T0 << std::endl
+            << "W: " << W << std::endl
+            << "T: " << T << std::endl;
+  std::cout << "-------------------------------------------------\n";
+i**************************************************//////////////
   Real theta = si / sw;
-
+  
   Real a = (cw * rw + theta * ci * ri) * kr * k / gammaw;  
   return a * grad_pw[_qp] * _grad_u[_qp] * _test[_i][_qp];
 }

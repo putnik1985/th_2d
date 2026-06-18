@@ -79,7 +79,7 @@
     kr = 1.0e-6
  gammaw = 9805.
   variable = T
-  pw = pw
+  coupled = pw
  []
 
 []
@@ -91,22 +91,39 @@
   value = 298.
   boundary = left
  []
+
  [right]
   type = NeumannBC
   variable = T
   value = 0.
   boundary = right
  []
+
  [top]
   type = NeumannBC
   variable = T
   value = 0.
   boundary = top
  []
+
  [bottom]
   type = NeumannBC
   variable = T
   value = 0.
+  boundary = bottom
+ []
+
+ [pw_top]
+  type = DirichletBC
+  variable = pw
+  value = 100000.
+  boundary = top
+ []
+
+ [pw_bottom]
+  type = DirichletBC
+  variable = pw
+  value = 100000.
   boundary = bottom
  []
 
