@@ -17,6 +17,8 @@
   []
   [pw]
   []
+  [p]
+  []
 []
 
 [ICs]
@@ -37,6 +39,18 @@
  [pw_time_derivative]
    type = TimeDerivative
    variable = pw
+ []
+
+ [p_derivative]
+  type = PressureDerivative_NP
+  bf = 1.e-8
+   n = 0.37
+     W = 400.
+    T0 = 273.15
+ swres = 0.05
+
+  variable = p
+  coupled = T
  []
 
  [conduction]
