@@ -53,6 +53,22 @@
   coupled = T
  []
 
+ [mass_balance]
+     type = Mass_Balance_PW_T_NP
+     W = 400.
+    T0 = 273.15
+ swres = 0.05
+    ri = 920
+    rw = 1000.
+    n = 0.37
+     k = 7.17e-4
+    kr = 1.0e-6
+ gammaw = 9805.
+  variable = p 
+  pw = pw
+   T = T
+ []
+
  [conduction]
   type = Diffusion_NP
   variable = T

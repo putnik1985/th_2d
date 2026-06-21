@@ -215,6 +215,8 @@
  /home/nikita/projects/moose/framework/build/header_symlinks/MooseVariableInterface.h \
  /home/nikita/projects/th_2d/src/kernels/Diffusion_NP.C \
  /home/nikita/projects/th_2d/build/header_symlinks/Diffusion_NP.h \
+ /home/nikita/projects/th_2d/src/kernels/Mass_Balance_PW_T_NP.C \
+ /home/nikita/projects/th_2d/build/header_symlinks/Mass_Balance_PW_T_NP.h \
  /home/nikita/projects/th_2d/src/kernels/PressureDerivative_NP.C \
  /home/nikita/projects/th_2d/build/header_symlinks/PressureDerivative_NP.h \
  /home/nikita/projects/moose/framework/build/header_symlinks/TimeKernel.h \
@@ -439,6 +441,8 @@
 /home/nikita/projects/moose/framework/build/header_symlinks/MooseVariableInterface.h:
 /home/nikita/projects/th_2d/src/kernels/Diffusion_NP.C:
 /home/nikita/projects/th_2d/build/header_symlinks/Diffusion_NP.h:
+/home/nikita/projects/th_2d/src/kernels/Mass_Balance_PW_T_NP.C:
+/home/nikita/projects/th_2d/build/header_symlinks/Mass_Balance_PW_T_NP.h:
 /home/nikita/projects/th_2d/src/kernels/PressureDerivative_NP.C:
 /home/nikita/projects/th_2d/build/header_symlinks/PressureDerivative_NP.h:
 /home/nikita/projects/moose/framework/build/header_symlinks/TimeKernel.h:
