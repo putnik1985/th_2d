@@ -19,6 +19,8 @@
   []
   [p]
   []
+  [pi]
+  []
 []
 
 [ICs]
@@ -36,9 +38,25 @@
 []
 
 [Kernels]
- [pw_time_derivative]
-   type = TimeDerivative
+ [pi_equation]
+   type = PI_NP
+    ri = 920
+    rw = 1000.
+    Lf = 334000.
+    T0 = 273.15
+   variable = pi
+
+   T = T
+  pw = pw
+ []
+
+ [pore_pressure]
+   type = PW_NP
+   kappaw = 0.6
+   
    variable = pw
+   p = p
+  pi = pi
  []
 
  [p_derivative]
@@ -143,30 +161,30 @@
   boundary = bottom
  []
 
- [pw_top]
+ [p_top]
   type = DirichletBC
-  variable = pw
+  variable = p
   value = 100000.
   boundary = top
  []
 
- [pw_bottom]
+ [p_bottom]
   type = DirichletBC
-  variable = pw
+  variable = p
   value = 100000.
   boundary = bottom
  []
 
- [pw_left]
+ [p_left]
   type = DirichletBC
-  variable = pw
+  variable = p
   value = 100000.
   boundary = left
  []
 
- [pw_right]
+ [p_right]
   type = DirichletBC
-  variable = pw
+  variable = p
   value = 100000.
   boundary = right
  []
