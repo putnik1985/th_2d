@@ -19,6 +19,9 @@ private:
   Real W;
   Real T0;
   Real swres;
+  Real kappaw;
+  Real ri;
+  Real rw;
 
   const VariableValue& T;
 };

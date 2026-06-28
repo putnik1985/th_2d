@@ -12,6 +12,9 @@ PressureDerivative_NP::validParams()
   params.addRequiredParam<Real>("W", "W");
   params.addRequiredParam<Real>("T0", "T0");
   params.addRequiredParam<Real>("swres","swres");
+  params.addRequiredParam<Real>("ri","ri");
+  params.addRequiredParam<Real>("rw","rw");
+  params.addRequiredParam<Real>("kappaw","kappaw");
 
   params.addRequiredCoupledVar("coupled","temperature");  
   return params;
@@ -25,6 +28,9 @@ PressureDerivative_NP::PressureDerivative_NP(const InputParameters & parameters)
     T0(getParam<Real>("T0")),
      W(getParam<Real>("W")),
     swres(getParam<Real>("swres")),
+    ri(getParam<Real>("ri")),
+    rw(getParam<Real>("rw")),
+    kappaw(getParam<Real>("kappaw")),
 
      T(coupledValue("coupled"))
 {
@@ -36,7 +42,8 @@ PressureDerivative_NP::computeQpResidual()
   Real sw = saturation(T[_qp]);
   Real dsw_dT;
   //std::cout << "T: " << T[_qp] << std::endl;
-  return sw * n * bf  * _u_dot[_qp] * _test[_i][_qp]; 
+  Real kappai = 1.0 - kappaw;
+  return sw * n * bf  * (kappaw + kappai * ri / rw) * _u_dot[_qp] * _test[_i][_qp]; 
 }
 
 Real
@@ -44,8 +51,9 @@ PressureDerivative_NP::computeQpJacobian()
 {
   Real sw = saturation(T[_qp]);
   Real dsw_dT;
+  Real kappai = 1.0 - kappaw;
 
-  return sw * n * bf  * _du_dot_du[_qp] * _phi[_j][_qp] * _test[_i][_qp]; 
+  return sw * n * bf  * (kappaw + kappai * ri / rw) * _du_dot_du[_qp] * _phi[_j][_qp] * _test[_i][_qp]; 
 }
 
 Real

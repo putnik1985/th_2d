@@ -24,8 +24,10 @@ Mass_Balance_PW_T_NP::validParams()
   params.addRequiredParam<Real>("swres","swres");
   params.addRequiredParam<Real>("W","W");
   params.addRequiredParam<Real>("n","n");
+  params.addRequiredParam<Real>("Lf","Lf");
+  params.addRequiredParam<Real>("kappaw","kappaw");
+  params.addRequiredParam<Real>("bf","bf");
 
-  params.addRequiredCoupledVar("pw","water pressure");
   params.addRequiredCoupledVar("T","temperature");
   return params;
 }
@@ -42,7 +44,9 @@ Mass_Balance_PW_T_NP::Mass_Balance_PW_T_NP(const InputParameters & parameters)
     swres(getParam<Real>("swres")),
     W(getParam<Real>("W")),
     n(getParam<Real>("n")),
-    grad_pw(coupledGradient("pw")),
+    Lf(getParam<Real>("Lf")),
+    kappaw(getParam<Real>("kappaw")),
+    bf(getParam<Real>("bf")),
     dT_dt(coupledDot("T")),
     T(coupledValue("T"))
 {
@@ -51,9 +55,31 @@ Mass_Balance_PW_T_NP::Mass_Balance_PW_T_NP(const InputParameters & parameters)
 Real
 Mass_Balance_PW_T_NP::computeQpResidual()
 {
+  Real sw = saturation(T[_qp]).first;
   Real dsw = saturation(T[_qp]).second;
-  return  kr * k / gammaw * grad_pw[_qp] * _grad_test[_i][_qp] + 
-          n * (rw - ri) / rw * dsw * dT_dt[_qp] * _test[_i][_qp];
+  Real kappai = 1.0 - kappaw;
+
+/**************************************
+  std::cout << "dsw: " << dsw 
+            << "rw: " << rw
+            << "T: " << T[_qp]
+            << "Lf: " << Lf 
+            << "swres: " << swres 
+            << "W: " << W 
+            << std::endl;
+**************************************/
+
+  return  kr * k / gammaw * _grad_u[_qp] * _grad_test[_i][_qp] + 
+          (n * (rw - ri) / rw * dsw - sw * n * bf * kappai * ri * Lf * 1.0 / T[_qp])* dT_dt[_qp] * _test[_i][_qp];
+}
+
+Real
+Mass_Balance_PW_T_NP::computeQpJacobian()
+{
+  Real sw = saturation(T[_qp]).first;
+  Real dsw = saturation(T[_qp]).second;
+  Real kappai = 1.0 - kappaw;
+  return  kr * k / gammaw * _grad_phi[_j][_qp] * _grad_test[_i][_qp]; 
 }
 
 std::pair<Real,Real>

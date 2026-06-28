@@ -19,7 +19,7 @@ public:
 
 protected:
   virtual Real computeQpResidual() override;
-////////////////////////// virtual Real computeQpJacobian() override;
+  virtual Real computeQpJacobian() override;
 
 private:
   Real rw;
@@ -31,7 +31,10 @@ private:
   Real W;
   Real swres;
   Real n;
-  const VariableGradient& grad_pw; // gardien of the coupled variable
+  Real bf;
+  Real kappaw;
+  Real Lf;
+
   const VariableValue& dT_dt;
   const VariableValue& T;
 };

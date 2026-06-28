@@ -17,10 +17,6 @@
   []
   [pw]
   []
-  [p]
-  []
-  [pi]
-  []
 []
 
 [ICs]
@@ -38,69 +34,56 @@
 []
 
 [Kernels]
- [pi_equation]
-   type = PI_NP
-    ri = 920
-    rw = 1000.
-    Lf = 334000.
-    T0 = 273.15
-   variable = pi
-
-   T = T
-  pw = pw
- []
-
- [pore_pressure]
-   type = PW_NP
-   kappaw = 0.6
-   
-   variable = pw
-   p = p
-  pi = pi
- []
 
  [p_derivative]
   type = PressureDerivative_NP
   bf = 1.e-8
    n = 0.37
-     W = 400.
+     W = 0.5
     T0 = 273.15
  swres = 0.05
+    ri = 920
+    rw = 1000.
+ kappaw = 0.6
 
-  variable = p
+  variable = pw
   coupled = T
  []
 
  [mass_balance]
      type = Mass_Balance_PW_T_NP
-     W = 400.
+     W = 0.5
     T0 = 273.15
  swres = 0.05
     ri = 920
     rw = 1000.
-    n = 0.37
+     n = 0.37
      k = 7.17e-4
     kr = 1.0e-6
- gammaw = 9805.
-  variable = p 
-  pw = pw
+gammaw = 9805.
+    bf = 1.e-8
+    Lf = 334000.
+kappaw = 0.6
+
+  variable = pw 
    T = T
  []
 
  [conduction]
   type = Diffusion_NP
-  variable = T
   T0 = 273.15
   lambdas = 9.0
   lambdaw = 0.6
   lambdai = 2.14
-  W = 400.
+  W = 0.5
   n = 0.37
+
+  variable = T
  []
   
  [time_derivative]
      type = TempDerivative_NP
-     W = 400.
+     W = 0.5
     T0 = 273.15
  swres = 0.05
     ri = 920
@@ -111,6 +94,7 @@
     cw = 4182.
     porosity = 0.37
     Lf = 334000.
+
   variable = T
  []
 
@@ -126,6 +110,7 @@
      k = 7.17e-4
     kr = 1.0e-6
  gammaw = 9805.
+
   variable = T
   coupled = pw
  []
@@ -163,28 +148,28 @@
 
  [p_top]
   type = DirichletBC
-  variable = p
+  variable = pw
   value = 100000.
   boundary = top
  []
 
  [p_bottom]
   type = DirichletBC
-  variable = p
+  variable = pw
   value = 100000.
   boundary = bottom
  []
 
  [p_left]
   type = DirichletBC
-  variable = p
+  variable = pw
   value = 100000.
   boundary = left
  []
 
  [p_right]
   type = DirichletBC
-  variable = p
+  variable = pw
   value = 100000.
   boundary = right
  []
